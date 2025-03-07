@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { Box, Button, TextField, Slider, Typography } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 
 export const CountdownWrapper = styled(Box)`
     display: flex;
@@ -62,7 +63,7 @@ export const StyledSlider = styled(Slider)`
 export const ButtonContainer = styled(Box)`
     display: flex;
     gap: 15px;
-    margin-bottom: 35px;
+    margin-top: auto;
 `;
 
 export const StyledButton = styled(Button)`
@@ -72,8 +73,17 @@ export const StyledButton = styled(Button)`
     border-radius: 8px;
     text-transform: none;
     transition: all 0.3s ease-in-out;
+    margin-top: 35px;
 
     &:hover {
         transform: scale(1.05);
     }
+`;
+
+export const StyledProgress = styled(LinearProgress)`
+    height: 10px;
+    border-radius: 5px;
+    width: 250px;
+    background-color: #1976d2;
+    transition: all 0.3s ease-in-out;
 `;

@@ -1,18 +1,9 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { TimerWrapper, TimeContainer, CustomButton, TimeSegment, ButtonContainer } from './Timer.styles';
 
 const Timer = () => {
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-
-    const handleStartPause = useCallback(() => {
-        setIsRunning(prev => !prev);
-    }, []);
-
-    const reset = useCallback(() => {
-        setIsRunning(false);
-        setTime(0);
-    }, []);
 
     useEffect(() => {
         if (isRunning) {
@@ -24,18 +15,29 @@ const Timer = () => {
         }
     }, [isRunning]);
 
-    const minutes = Math.floor(time / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
-    const milliseconds = Math.floor((time % 1000) / 10);
+    const handleStartPause = () => setIsRunning(prev => !prev);
+    const reset = () => {
+        setIsRunning(false);
+        setTime(0);
+    };
+
+    const formatTime = () => {
+        const minutes = Math.floor(time / 60000);
+        const seconds = String(Math.floor((time % 60000) / 1000)).padStart(2, '0');
+        const milliseconds = String(Math.floor((time % 1000) / 10)).padStart(2, '0');
+        return `${minutes}:${seconds}:${milliseconds}`;
+    };
 
     return (
         <TimerWrapper>
-            <TimeContainer>
-                <TimeSegment>{minutes}</TimeSegment>
-                <TimeSegment>:</TimeSegment>
-                <TimeSegment>{String(seconds).padStart(2, '0')}</TimeSegment>
-                <TimeSegment>:</TimeSegment>
-                <TimeSegment>{String(milliseconds).padStart(2, '0')}</TimeSegment>
+            <TimeContainer style={{ display: 'flex', gap: '0px' }}>
+                {formatTime()
+                    .split('')
+                    .map((char, index) => (
+                        <TimeSegment key={index} style={{ letterSpacing: '-8px', marginRight: '-15px' }}>
+                            {char}
+                        </TimeSegment>
+                    ))}
             </TimeContainer>
 
             <ButtonContainer>
