@@ -23,7 +23,7 @@ const Countdown = () => {
         if (!isRunning) {
             setTimeLeft((minutes * 60 + seconds) * 1000);
         }
-    }, [minutes, seconds, isRunning]);
+    }, [minutes, seconds]);
 
     const handleStartPause = () => {
         if (timeLeft > 0) {
@@ -48,13 +48,7 @@ const Countdown = () => {
         if (!isRunning) return;
 
         const timerId = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1000) {
-                    clearInterval(timerId);
-                    return 0;
-                }
-                return prev - 1000;
-            });
+            setTimeLeft(prev => (prev <= 1000 ? 0 : prev - 1000));
         }, 1000);
 
         return () => clearInterval(timerId);
@@ -72,13 +66,10 @@ const Countdown = () => {
         setState: React.Dispatch<React.SetStateAction<number>>,
         maxValue: number,
     ) => {
-        let value = e.target.value.trim();
-        value = value.replace(/[^0-9]/g, '');
-        if (value === '') value = '0';
-
-        let numericValue = parseInt(value, 10) || 0;
-        numericValue = Math.max(0, Math.min(maxValue, numericValue));
-
+        const numericValue = Math.min(
+            maxValue,
+            Math.max(0, parseInt(e.target.value.trim().replace(/\D/g, '') || '0', 10)),
+        );
         setState(numericValue);
     };
 
